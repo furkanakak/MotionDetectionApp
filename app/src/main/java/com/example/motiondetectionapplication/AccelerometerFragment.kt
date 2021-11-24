@@ -12,20 +12,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.motiondetectionapplication.databinding.FragmentAccelerometerBinding
 import android.app.Activity
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.airbnb.lottie.utils.Utils
+import kotlinx.coroutines.delay
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import java.util.*
+import android.os.CountDownTimer
 
 
-class AccelerometerFragment : Fragment() , SensorEventListener {
+
+
+
+class AccelerometerFragment : Fragment() , SensorEventListener
+{
     private lateinit var binding: FragmentAccelerometerBinding
     private var sensorManager: SensorManager? = null
     var budge : Boolean = false
@@ -39,7 +48,6 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
 
     var targetTime : Long = 60000
     var systemTime : Long = 0
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,6 +64,7 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
         initAccelerometer()
         addListeners()
         systemTimer()
+
     }
 
     fun initAccelerometer()
@@ -96,7 +105,10 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
                     alertMessage(view!!.rootView)
                     targetTime=targetTimer()
                     systemTime=systemTimer()
-
+                    Log.v("closee","close AlertView")
+                 //   builder.setCancelable(true)
+                   
+               
 
                 }
             }
@@ -107,34 +119,50 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
         }
     }
 
+ 
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addListeners() {
         binding.button.setOnClickListener { alertMessage(it) }
     }
 
+ @RequiresApi(Build.VERSION_CODES.O)
+ private fun update()
+ {
+     targetTime=targetTimer()
+     systemTime=systemTimer()
+ }
 
-    companion object{
-
-    }
 
    @RequiresApi(Build.VERSION_CODES.O)
    private fun alertMessage(view: View)
    {
-
-       val builder = AlertDialog.Builder(view.context)
+       var builder = AlertDialog.Builder(requireContext()).create()
        val design: View = layoutInflater.inflate(R.layout.item_alert_design, null)
        builder.setView(design)
 
-       builder.setPositiveButton("Yes") { _: DialogInterface, _: Int ->
-           targetTime=targetTimer()
-           systemTime=systemTimer()
-       }
-       builder.setNegativeButton("Cancel") {_:DialogInterface,_: Int ->
-           targetTime=targetTimer()
-           systemTime=systemTimer()
-       }
+       builder.setButton(Dialog.BUTTON_POSITIVE,"YES", DialogInterface.OnClickListener { _,_ ->
+
+       })
+       builder.setButton(Dialog.BUTTON_NEGATIVE,"CLOSE", DialogInterface.OnClickListener { _,_ ->
+
+       })
        builder.show()
-   }
+
+       val t = Timer()
+       t.schedule(object : TimerTask() {
+           override fun run() {
+               builder.dismiss() // when the task active then close the dialog
+               t.cancel() // also just top the timer thread, otherwise, you may receive a crash report
+               update()
+           }
+       }, 5000)
+
+
+       }
+
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun targetTimer() : Long
     {
@@ -151,6 +179,7 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
         return targetTime
 
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun systemTimer() : Long
     {
@@ -166,4 +195,7 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
 
     }
 
-}
+
+
+   }
+
