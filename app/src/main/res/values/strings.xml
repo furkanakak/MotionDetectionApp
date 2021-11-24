@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MotionDetectionApplication</string>
+    <string name="dialog_message">Long time no movement! \n Are you there ?</string>
+    <string name="x_coordinate">X \n Coordinate :</string>
+    <string name="y_coordinate">Y \n Coordinate :</string>
+    <string name="z_coordinate">Z \n Coordinate :</string>
+    <string name="dialog_button">Pop Up Dialog</string>
+    <string name="table_title">Accelerometer Sensor Data</string>
 </resources>

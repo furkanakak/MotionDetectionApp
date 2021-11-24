@@ -2,107 +2,129 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/softColor">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="4"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="10"
+        android:fontFamily="@font/bad_script"
+        android:text="@string/table_title"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <TableRow
+            android:layout_gravity="center"
+            android:background="@color/design_default_color_primary"
             android:gravity="center"
-            android:orientation="vertical">
+            android:weightSum="12">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="10dp"
+                android:layout_margin="10dp"
+                android:layout_weight="4"
                 android:gravity="center"
-                android:text="X \n kordinatı :"
+                android:fontFamily="@font/bad_script"
+                android:lineSpacingMultiplier="0.8"
+                android:text="@string/x_coordinate"
+                android:textColor="@color/white"
                 android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/y_coordinate"
+                android:fontFamily="@font/bad_script"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:lineSpacingMultiplier="0.8"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/z_coordinate"
+                android:fontFamily="@font/bad_script"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:lineSpacingMultiplier="0.8"/>
+        </TableRow>
+        <TableRow android:layout_height="1px" android:background="#BDBDBD">
+            <TextView android:layout_span="2" android:layout_height="1px"
+                android:layout_width="fill_parent" android:text="">
+            </TextView>
+        </TableRow>
+        <TableRow
+            android:layout_gravity="center"
+            android:background="@color/design_default_color_primary"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/ax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:text="ax : "
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="Y \n kordinatı :"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:text=""
+                android:textColor="@color/white"
                 android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/ay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:text="ay : "
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="Z \n kordinatı :"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
                 android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/az"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:text="az : "
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
                 android:textSize="11sp" />
-        </LinearLayout>
-
-    </LinearLayout>
+        </TableRow>
+    </TableLayout>
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Button"
+        android:layout_marginTop="20dp"
+        android:text="@string/dialog_button"
+        android:fontFamily="@font/bad_script"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
