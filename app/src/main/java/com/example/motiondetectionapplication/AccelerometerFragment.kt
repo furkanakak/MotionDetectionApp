@@ -13,11 +13,15 @@ import androidx.fragment.app.Fragment
 import com.example.motiondetectionapplication.databinding.FragmentAccelerometerBinding
 import android.app.Activity
 import android.content.DialogInterface
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 
@@ -33,6 +37,9 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
     var ay0:kotlin.Double = 0.0
     var az0:kotlin.Double = 0.0
 
+    var targetTime : Long = 60000
+    var systemTime : Long = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,11 +50,12 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAccelerometer()
         addListeners()
-        localTime()
+        systemTimer()
     }
 
     fun initAccelerometer()
@@ -61,6 +69,7 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
 
     override fun onAccuracyChanged(arg0: Sensor?, arg1: Int) {}
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             ax = event.values[0].toDouble()
@@ -76,6 +85,20 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
                 az0 = az
                 budge = true
                 Toast.makeText(requireContext(),"hareket algilandi",Toast.LENGTH_LONG).show()
+
+                targetTime=targetTimer()
+
+            }
+            else
+            {
+                if (targetTime == systemTimer())
+                {
+                    alertMessage(view!!.rootView)
+                    targetTime=targetTimer()
+                    systemTime=systemTimer()
+
+
+                }
             }
             binding.ax.text = axx.toString()
             binding.ay.text = ayy.toString()
@@ -84,34 +107,63 @@ class AccelerometerFragment : Fragment() , SensorEventListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addListeners() {
         binding.button.setOnClickListener { alertMessage(it) }
     }
 
+
+    companion object{
+
+    }
+
+   @RequiresApi(Build.VERSION_CODES.O)
    private fun alertMessage(view: View)
    {
+
        val builder = AlertDialog.Builder(view.context)
        val design: View = layoutInflater.inflate(R.layout.item_alert_design, null)
        builder.setView(design)
 
        builder.setPositiveButton("Yes") { _: DialogInterface, _: Int ->
-
+           targetTime=targetTimer()
+           systemTime=systemTimer()
        }
        builder.setNegativeButton("Cancel") {_:DialogInterface,_: Int ->
-
+           targetTime=targetTimer()
+           systemTime=systemTimer()
        }
        builder.show()
    }
-    private fun localTime()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun targetTimer() : Long
     {
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-        val currentDate = sdf.format(Date())
+        val zero = LocalTime.parse("00:00:00")
+        var sdf = SimpleDateFormat("hh:mm:ss")
+        var currentDate = sdf.format(Date())
+        val time = LocalTime.parse(currentDate)
         Log.v("timess","time : currentDate : $currentDate")
+
+        val mils: Long = ChronoUnit.MILLIS.between(zero, time)
+        targetTime = mils + (60000).toLong()
+        Log.v("timess","mils : currentDate : $mils")
+        Log.v("timess","mils : targetTime : $targetTime")
+        return targetTime
+
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private  fun systemTimer() : Long
+    {
+        val zero = LocalTime.parse("00:00:00")
+        var sdf = SimpleDateFormat("hh:mm:ss")
+        var currentDate = sdf.format(Date())
+        Log.v("systemTimer","systemTimer : currentDate : $currentDate")
+        val time = LocalTime.parse(currentDate)
+        val systemTimer: Long = ChronoUnit.MILLIS.between(zero, time)
+        Log.v("systemTimer","systemTimer : currentDate : $systemTimer")
+        systemTime = systemTimer
+        return systemTime
 
-
-
-
-
+    }
 
 }
